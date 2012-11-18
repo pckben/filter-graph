@@ -1,7 +1,7 @@
 BIN = bin
-SUBDIRS = src
+SUBDIRS = src test
 
-all: $(SUBDIRS)
+all: $(BIN) $(SUBDIRS) run_tests
 
 $(BIN):
 	-mkdir bin
@@ -17,6 +17,9 @@ depend:
 
 lint:
 	-for x in $(SUBDIRS); do $(MAKE) -C $$x lint; done
+
+run_tests:
+	bin/testsuite
 
 clean:
 	-for x in $(SUBDIRS); do $(MAKE) -C $$x clean; done

@@ -44,6 +44,9 @@ class Filter {
   // writes to output ports.
   void Process();
 
+  // Gets the port with the given name.
+  Port* GetPort(std::string name);
+
  protected:
   void AddInput(Port* port);
   void AddOutput(Port* port);

@@ -17,6 +17,7 @@
 #define FILTERGRAPH_PORT_H_
 
 #include <vector>
+#include <string>
 #include "./utils.h"
 
 namespace filter_graph {
@@ -26,17 +27,17 @@ namespace filter_graph {
 // delivered to all input ports connected to them.
 class Port {
  public:
-  explicit Port(size_t capacity);
+  Port(std::string name, size_t capacity);
   virtual ~Port();
 
-  // Returns true if the Port is ready for read/write data. An input port might
-  // return false if data is not ready to be read, and an output port might
-  // return false if old data has not been sent yet.
-  bool Ready() { return ready_; }
+  // Gets the name of the port.
+  std::string Name() const { return name_; }
+  // Gets the capacity of the port.
+  size_t Capacity() const { return capacity_; }
 
-  // Resets the state of the port. This is used to indicate that the data has
-  // been consumed, and the port is ready to send/receive new data.
-  void Reset() { ready_ = true; }
+  bool Readable() const { return readable_; }
+  bool Writable() const { return writable_; }
+  void Reset() { readable_ = false; writable_ = true; }
 
   // Gets the size of data the port is holding.
   size_t Size() { return size_; }
@@ -53,14 +54,15 @@ class Port {
   // On success, return size; 0 otherwise.
   size_t Write(const void* data, size_t size);
 
-  // Send the data written in this port to all other connected ports.
-  void Send();
-
   // Connects this port to the given port.
   void Connect(Port* port);
 
+  // Returns the number of input ports that connect to this output port.
+  int FanOut() const { return connected_ports_.size(); }
+
  private:
-  bool ready_;
+  std::string name_;
+  bool readable_, writable_;
   void* data_;
   size_t capacity_;
   size_t size_;

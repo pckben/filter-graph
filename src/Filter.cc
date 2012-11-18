@@ -18,28 +18,45 @@
 #include "./Port.h"
 
 using std::vector;
+using std::string;
 
 namespace filter_graph {
 
 void Filter::Process() {
   // check if all input data are ready, return and do nothing if one is not
   vector<Port*>::iterator it = input_ports_.begin();
-  for (; it != input_ports_.end(); ++it) {
-    if (!(*it)->Ready())
+  for (; it != input_ports_.end(); ++it)
+    if (!(*it)->Readable())
       return;
-  }
+  // check if all output ports are ready, return and do nothing if one is not
+  it = output_ports_.begin();
+  for (; it != output_ports_.end(); ++it)
+    if (!(*it)->Writable())
+      return;
   // do the concrete processing task
   OnProcess();
   // reset all input ports so they can receive new data
   it = input_ports_.begin();
-  for (; it != input_ports_.end(); ++it) {
+  for (; it != input_ports_.end(); ++it)
     (*it)->Reset();
-  }
-  // send all data in output ports
+  // reset all output ports so they can write new data
   it = output_ports_.begin();
-  for (; it != output_ports_.end(); ++it) {
-    (*it)->Send();
-  }
+  for (; it != output_ports_.end(); ++it)
+    (*it)->Reset();
+}
+
+Port* Filter::GetPort(string name) {
+  vector<Port*>::iterator it = input_ports_.begin();
+  for (; it != input_ports_.end(); ++it)
+    if ((*it)->Name() == name)
+      return *it;
+
+  it = output_ports_.begin();
+  for (; it != output_ports_.end(); ++it)
+    if ((*it)->Name() == name)
+      return *it;
+
+  return NULL;
 }
 
 void Filter::AddInput(Port* port) {

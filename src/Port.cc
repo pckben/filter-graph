@@ -18,11 +18,14 @@
 #include <assert.h>
 
 using std::vector;
+using std::string;
 
 namespace filter_graph {
 
-Port::Port(size_t capacity)
-    : ready_(true),
+Port::Port(string name, size_t capacity)
+    : name_(name),
+      readable_(false),
+      writable_(true),
       data_(NULL),
       capacity_(capacity),
       size_(0) {
@@ -36,24 +39,24 @@ Port::~Port() {
 }
 
 size_t Port::Read(void** data) const {
-  if (!ready_) return 0;
+  if (!Readable()) return 0;
   *data = data_;
   return size_;
 }
 
 size_t Port::Write(const void* data, size_t size) {
+  if (!Writable()) return 0;
+  writable_ = false;
   assert(size <= capacity_);
-  if (!ready_) return 0;
   memcpy(data_, data, size);
   size_ = size;
-  return size;
-}
-
-void Port::Send() {
+  // Send to remote ports
   vector<Port*>::iterator it = connected_ports_.begin();
   for (; it != connected_ports_.end(); ++it) {
-    (*it)->Write(data_, size_);
+    (*it)->Write(data, size);
   }
+  readable_ = true;
+  return size;
 }
 
 void Port::Connect(Port* port) {
