@@ -1,7 +1,8 @@
 BIN = bin
+
 SUBDIRS = src test
 
-all: $(BIN) $(SUBDIRS) run_tests
+all: lint $(BIN) $(SUBDIRS) run_tests
 
 $(BIN):
 	-mkdir bin
@@ -13,16 +14,18 @@ $(OBJFILES):
 	$(CXX) $< -o $@
 
 depend:
-	-for x in $(SUBDIRS); do $(MAKE) -C $$x depend; done
+	-@for x in $(SUBDIRS); do $(MAKE) -C $$x depend; done
 
 lint:
-	-for x in $(SUBDIRS); do $(MAKE) -C $$x lint; done
+	@echo "\n========== Checking coding style ==========\n"
+	-@for x in $(SUBDIRS); do $(MAKE) -C $$x lint; done
 
 run_tests:
-	bin/testsuite
+	@echo "\n========== Running all tests ==========\n"
+	@bin/testsuite
 
 clean:
-	-for x in $(SUBDIRS); do $(MAKE) -C $$x clean; done
+	-@for x in $(SUBDIRS); do $(MAKE) -C $$x clean; done
 	-rm -f bin/*
 
 .PHONY: $(SUBDIRS)

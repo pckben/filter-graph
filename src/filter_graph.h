@@ -48,7 +48,7 @@ class Port {
 
   bool Readable() const { return readable_; }
   bool Writable() const { return writable_; }
-  void Reset() { readable_ = false; writable_ = true; }
+  void Reset();
 
   // Gets the size of data the port is holding.
   size_t Size() { return size_; }

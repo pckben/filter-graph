@@ -10,14 +10,13 @@ $(LIBFILE): $(BIN) $(OBJFILES)
 	$(AR) -cru $(LIBFILE) $(OBJFILES)
 	$(RANLIB) $(LIBFILE)
 
-lint: *.cc *.h
-	$(CPPLINT) --filter=-build/header_guard *.h *.cc
-
 clean:
 	-rm -f *.o *.a
+
+lint: *.cc *.h
+	$(CPPLINT) --filter=-build/header_guard *.h *.cc
 
 depend:
 	-$(CXX) -M $(CXXFLAGS) *.cc > .depend.mk  
 
 -include .depend.mk
-

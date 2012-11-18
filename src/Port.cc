@@ -13,9 +13,9 @@
 // See the Apache 2 License for the specific language governing permissions and
 // limitations under the License.
 
-#include "./filter_graph.h"
-
 #include <assert.h>
+
+#include "./filter_graph.h"
 
 using std::vector;
 using std::string;
@@ -36,6 +36,11 @@ Port::Port(string name, size_t capacity)
 Port::~Port() {
   if (data_)
     free(data_);
+}
+
+void Port::Reset() {
+  readable_ = false;
+  writable_ = true;
 }
 
 size_t Port::Read(void** data) const {

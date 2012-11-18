@@ -10,6 +10,8 @@ all: $(BINFILE)
 $(BINFILE): *.cc $(LIBFILE)
 	$(CXX) $(CXXFLAGS) *.cc -o $(BINFILE)
 
+lint: 
+
 depend:
 	$(CXX) -M $(CXXFLAGS) *.cc > .depend.mk
 
