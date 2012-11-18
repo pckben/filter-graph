@@ -49,7 +49,7 @@ class CounterFilterGraphTest : public ::testing::Test {
 
 // Test if a source filter escalate the processing chain to the sink filter so
 // the sink filter can work automatically.
-TEST_F(CounterFilterGraphTest, Count) {
+TEST_F(CounterFilterGraphTest, OneConsumer) {
   CounterFilter counter;
   IntegerConsumer consumer;
   counter.GetPort("counter_out")->Connect(consumer.GetPort("integer_in"));
@@ -62,6 +62,20 @@ TEST_F(CounterFilterGraphTest, Count) {
   counter.Process();
   ASSERT_EQ(3, consumer.Data())
     << "Consumer's Process() wasn't called the third time, or data was not sent correctly.";
+}
+
+TEST_F(CounterFilterGraphTest, TwoConsumer) {
+  CounterFilter counter;
+  IntegerConsumer consumer1, consumer2;
+  counter.GetPort("counter_out")->Connect(consumer1.GetPort("integer_in"));
+  counter.GetPort("counter_out")->Connect(consumer2.GetPort("integer_in"));
+  counter.Process();
+  counter.Process();
+  counter.Process();
+  ASSERT_EQ(3, consumer1.Data())
+    << "Consumer1's Process() wasn't called the third time, or data was not sent correctly.";
+  ASSERT_EQ(3, consumer2.Data())
+    << "Consumer2's Process() wasn't called the third time, or data was not sent correctly.";
 }
 
 }  // namespace
