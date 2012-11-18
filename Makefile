@@ -9,7 +9,7 @@ $(BIN):
 $(OBJFILES):
 	$(CXX) $^ -o $@
 
-%.o: src/%.cc src/%.h
+%.o: src/%.cc
 	$(CXX) $< -o $@
 
 depend:

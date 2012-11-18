@@ -13,7 +13,7 @@
 // See the Apache 2 License for the specific language governing permissions and
 // limitations under the License.
 
-#include "./Port.h"
+#include "./filter_graph.h"
 
 #include <assert.h>
 
@@ -56,6 +56,11 @@ size_t Port::Write(const void* data, size_t size) {
     (*it)->Write(data, size);
   }
   readable_ = true;
+  // notify listeners
+  vector<PortListener*>::iterator it1 = listeners_.begin();
+  for (; it1 != listeners_.end(); ++it1) {
+    (*it1)->OnData();
+  }
   return size;
 }
 

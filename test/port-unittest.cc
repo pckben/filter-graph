@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "../src/Port.h"
+#include "../src/filter_graph.h"
 
 namespace filter_graph {
 

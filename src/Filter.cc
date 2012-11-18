@@ -13,9 +13,7 @@
 // See the Apache 2 License for the specific language governing permissions and
 // limitations under the License.
 
-#include "./Filter.h"
-
-#include "./Port.h"
+#include "./filter_graph.h"
 
 using std::vector;
 using std::string;
@@ -61,10 +59,15 @@ Port* Filter::GetPort(string name) {
 
 void Filter::AddInput(Port* port) {
   input_ports_.push_back(port);
+  port->AddListener(this);
 }
 
 void Filter::AddOutput(Port* port) {
   output_ports_.push_back(port);
+}
+
+void Filter::OnData() {
+  Process();
 }
 
 }  // namespace filter_graph
