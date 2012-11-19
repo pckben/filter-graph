@@ -70,6 +70,16 @@ TEST_F(FilterTest, AddGetPorts) {
   filter.AddOutput(&output);
   EXPECT_EQ(&input, filter.GetPort("input")) << "Input port wasn't retrieved correctly.";
   EXPECT_EQ(&output, filter.GetPort("output")) << "Output port wasn't retrieved correctly.";
+  EXPECT_EQ(&output, filter["output"]) << "Output port wasn't retrieved correctly.";
+}
+
+TEST_F(FilterTest, AddGetPorts_UsingBracketOperator) {
+  TestableFilter filter;
+  Port input("input"), output("output");
+  filter.AddInput(&input);
+  filter.AddOutput(&output);
+  EXPECT_EQ(&input, filter["input"]) << "Input port wasn't retrieved correctly.";
+  EXPECT_EQ(&output, filter["output"]) << "Output port wasn't retrieved correctly.";
 }
 
 }  // namespace

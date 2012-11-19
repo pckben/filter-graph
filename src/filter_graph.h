@@ -114,6 +114,8 @@ class Filter : public PortListener {
   // Gets the port with the given name.
   Port* GetPort(std::string name);
 
+  Port* operator[](std::string name) { return GetPort(name); }
+
   // implementation of PortListener methods
   void OnData();
 
