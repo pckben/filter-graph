@@ -9,16 +9,24 @@ class PortTest : public ::testing::Test {
   virtual void SetUp() {}
 };
 
-TEST_F(PortTest, BasicSetGet) {
-  Port port("myname", 100);
+TEST_F(PortTest, Name) {
+  Port port("myname");
   ASSERT_EQ("myname", port.Name()) 
     << "Port name wasn't set correctly.";
+}
+
+TEST_F(PortTest, Size) {
+  Port port("testport");
+  port.Resize(100);
   ASSERT_EQ((size_t)100, port.Capacity()) 
+    << "Port capacity wasn't set correctly.";
+  port.Resize(1000);
+  ASSERT_EQ((size_t)1000, port.Capacity()) 
     << "Port capacity wasn't set correctly.";
 }
 
 TEST_F(PortTest, ReadableWritableReset) {
-  Port port("testport", sizeof(int));
+  Port port("testport");
   ASSERT_TRUE(port.Writable()) 
     << "Port should be writable after created.";
   ASSERT_FALSE(port.Readable()) 
@@ -44,8 +52,8 @@ TEST_F(PortTest, ReadableWritableReset) {
 }
 
 TEST_F(PortTest, ConnectFanOut) {
-  Port port1("port1", 0);
-  Port port2("port2", 0);
+  Port port1("port1");
+  Port port2("port2");
   EXPECT_EQ(0, port1.FanOut());
   port1.Connect(&port2);
   EXPECT_EQ(1, port1.FanOut());
@@ -54,7 +62,7 @@ TEST_F(PortTest, ConnectFanOut) {
 // Write to a port and then read back
 TEST_F(PortTest, WriteThenReadSamePort) {
   int data = 10;
-  Port port("testport", sizeof(data));
+  Port port("testport");
   ASSERT_EQ((size_t)0, port.Size()) 
     << "Port's data size must be zero after created.";
   size_t nbytes = port.Write(&data, sizeof(data));
@@ -74,8 +82,8 @@ TEST_F(PortTest, WriteThenReadSamePort) {
 // Write to a port, and then read back from the remote port
 TEST_F(PortTest, WriteThenReadRemote) {
   int data = 1234;
-  Port input("input", sizeof(int));
-  Port output("output", sizeof(int));
+  Port input("input");
+  Port output("output");
   output.Connect(&input);
   output.Write(&data, sizeof(data));
   // now read back on the remote port

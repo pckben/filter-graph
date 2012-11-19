@@ -23,7 +23,7 @@ other input blocks:
 	// A block that generates random integers.
 	class IntegerGenerator : public filter_graph::Filter {
 	 public:
-	  IntegerGenerator() : rand_out_("rand_out", sizeof(int)) {
+	  IntegerGenerator() : rand_out_("rand_out") {
 	    AddOutput(&rand_out_);
 	  }
 	
@@ -40,7 +40,7 @@ other input blocks:
 	// A block that consumes an integer and print out to standard output.
 	class IntegerPrinter : public filter_graph::Filter {
 	 public:
-	  IntegerPrinter() : integer_in_("integer_in", sizeof(int)) {
+	  IntegerPrinter() : integer_in_("integer_in") {
 	    AddInput(&integer_in_);
 	  }
 	
@@ -58,7 +58,7 @@ other input blocks:
 	// A block that consumes an integer and write to log file.
 	class IntegerLogger : public filter_graph::Filter {
 	 public:
-	  IntegerLogger() : integer_in_("integer_in", sizeof(int)) {
+	  IntegerLogger() : integer_in_("integer_in") {
 	    AddInput(&integer_in_);
 	  }
 	

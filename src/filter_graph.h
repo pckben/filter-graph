@@ -38,7 +38,7 @@ class PortListener {
 // delivered to all input ports connected to them.
 class Port {
  public:
-  Port(std::string name, size_t capacity);
+  explicit Port(std::string name);
   virtual ~Port();
 
   // Gets the name of the port.
@@ -53,15 +53,20 @@ class Port {
   // Gets the size of data the port is holding.
   size_t Size() { return size_; }
 
+  // Force resize the port to the requested size.
+  void Resize(size_t size);
+
   // Gets the generic data (void*) and put the given generic pointer to it.
   // Returns the number of bytes read.
   //
   // Sample usage:
   //  int* data;
-  //  size_t size = port.Read(&data);  // data now points to the port's data.
+  //  size_t size = port.Read((void**)&data);
+  //  // data now points to the port's data.
   size_t Read(void** data) const;
 
-  // Writes the given data.
+  // Writes the given data. If data doesn't fit in the Port buffer, the buffer
+  // is resized accordingly.
   // On success, return size; 0 otherwise.
   size_t Write(const void* data, size_t size);
 

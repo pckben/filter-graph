@@ -41,7 +41,7 @@ TEST_F(FilterTest, OnProcessIsCalled) {
 
 TEST_F(FilterTest, OnProcessIsCalled_FilterHasOutputPorts) {
   TestableFilter filter;
-  Port output("output", 0);
+  Port output("output");
   filter.AddOutput(&output);
   test_OnProcessIsCalled(filter);
 }
@@ -50,7 +50,7 @@ TEST_F(FilterTest, OnProcessIsCalled_FilterHasOutputPorts) {
 // and will not otherwise.
 TEST_F(FilterTest, OnProcessIsCalled_FilterHasInputPorts) {
   TestableFilter filter;
-  Port input("input", 0);
+  Port input("input");
   filter.AddInput(&input);
   input.Write(NULL, 0);
   filter.Process();
@@ -65,7 +65,7 @@ TEST_F(FilterTest, OnProcessIsCalled_FilterHasInputPorts) {
 
 TEST_F(FilterTest, AddGetPorts) {
   TestableFilter filter;
-  Port input("input", 0), output("output", 0);
+  Port input("input"), output("output");
   filter.AddInput(&input);
   filter.AddOutput(&output);
   EXPECT_EQ(&input, filter.GetPort("input")) << "Input port wasn't retrieved correctly.";

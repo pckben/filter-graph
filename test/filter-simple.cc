@@ -7,7 +7,7 @@ namespace filter_graph {
 // Has one output port to write an increasing counter.
 class CounterFilter : public Filter {
  public:
-  CounterFilter() : data_(0), counterPort_("counter_out", sizeof(int)) {
+  CounterFilter() : data_(0), counterPort_("counter_out") {
     AddOutput(&counterPort_);
   }
 
@@ -25,7 +25,7 @@ class CounterFilter : public Filter {
 // Has one input port to receive an integer.
 class IntegerConsumer : public Filter {
  public:
-  IntegerConsumer() : data_(0), input_("integer_in", sizeof(int)) {
+  IntegerConsumer() : data_(0), input_("integer_in") {
     AddInput(&input_);
   }
  
