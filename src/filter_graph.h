@@ -30,7 +30,7 @@ class PortListener {
   virtual void OnData() = 0;
 
  private:
-  DISALLOW_COPY_AND_ASSIGN(PortListener);
+  FILTERGRAPH_DISALLOW_COPY_AND_ASSIGN(PortListener);
 };
 
 // Ports are mean of communication between Filters. Ports can be connected
@@ -87,7 +87,7 @@ class Port {
   size_t size_;
   std::vector<Port*> connected_ports_;
   std::vector<PortListener*> listeners_;
-  DISALLOW_COPY_AND_ASSIGN(Port);
+  FILTERGRAPH_DISALLOW_COPY_AND_ASSIGN(Port);
 };
 
 // A Filter is a unit block of processing. Filters can be connected with each
@@ -132,7 +132,7 @@ class Filter : public PortListener {
  private:
   std::vector<Port*> input_ports_;
   std::vector<Port*> output_ports_;
-  DISALLOW_COPY_AND_ASSIGN(Filter);
+  FILTERGRAPH_DISALLOW_COPY_AND_ASSIGN(Filter);
 };
 
 }  // namespace filter_graph
